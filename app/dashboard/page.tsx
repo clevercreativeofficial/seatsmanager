@@ -148,8 +148,9 @@ export default function DashboardPage() {
     return (
         <div className="min-h-screen">
             {/* Modal */}
+
             <Dialog open={!!selectedTable} onOpenChange={() => setSelectedTable(null)}>
-                <DialogContent className="max-w-lg">
+                <DialogContent>
                     {selectedTable && (
                         <>
                             <DialogHeader>
@@ -237,15 +238,17 @@ export default function DashboardPage() {
                 <main className="py-8">
                     {/* Dashboard Header */}
                     <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-800">Table Management</h1>
-                            <p className="text-gray-600">
-                                {filteredTables.length} tables found ({filteredTables.reduce((acc, table) =>
-                                    acc + table.seats.filter(s => s.guest_name !== null).length, 0)} guests seated)
-                            </p>
-                        </div>
+                        {paginatedTables.length !== 0 && (
+                            <div className='md:mt-0 mt-10'>
+                                <h1 className="text-2xl font-bold text-gray-800">Table Management</h1>
+                                <p className="text-gray-600">
+                                    {filteredTables.length} tables found ({filteredTables.reduce((acc, table) =>
+                                        acc + table.seats.filter(s => s.guest_name !== null).length, 0)} guests seated)
+                                </p>
+                            </div>
+                        )}
 
-                        <div className="flex gap-2">
+                        <div className="hidden md:flex gap-2">
                             <Select value={filter} onValueChange={(value) => {
                                 setFilter(value as typeof filter);
                                 setCurrentPage(1);
@@ -276,6 +279,41 @@ export default function DashboardPage() {
                             >
                                 <List className="h-4 w-4" />
                             </Button>
+                        </div>
+
+                        {/* Mobile filter */}
+                        <div className="md:hidden fixed left-0 top-[72px] py-3 px-4 w-full bg-zinc-50 flex justify-between gap-2 border-b z-50">
+                            <Select value={filter} onValueChange={(value) => {
+                                setFilter(value as typeof filter);
+                                setCurrentPage(1);
+                            }}>
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Filter tables" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All Tables</SelectItem>
+                                    <SelectItem value="available">Available Tables</SelectItem>
+                                    <SelectItem value="taken">Fully Seated Tables</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <div className='w-full flex justify-end space-x-2'>
+                                <Button
+                                    variant={viewMode === 'grid' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('grid')}
+                                    size="icon"
+                                    className='hover:text-white hover:border-transparent'
+                                >
+                                    <LayoutGrid className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    variant={viewMode === 'list' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('list')}
+                                    size="icon"
+                                    className='hover:text-white hover:border-transparent'
+                                >
+                                    <List className="h-4 w-4" />
+                                </Button>
+                            </div>
                         </div>
                     </div>
 

@@ -15,7 +15,7 @@ const quicksand = Quicksand({
 
 
 export const metadata: Metadata = {
-  title: "Sits Manager",
+  title: "Seats Manager",
   description: "A simple seating management system",
 };
 
