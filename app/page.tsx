@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2, Lock, User } from 'lucide-react';
+import { Loader2, Lock, User, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -22,7 +23,7 @@ export default function LoginPage() {
     try {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       if (username === 'admin' && password === 'wedding') {
         localStorage.setItem('isAuthenticated', 'true');
         router.push('/dashboard');
@@ -68,7 +69,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-3 rounded-md text-sm">
+              <div className="bg-rose-50 border border-rose-200 text-rose-600 px-4 py-2 rounded-md text-sm">
                 {error}
               </div>
             )}
@@ -77,7 +78,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             disabled={isLoading || !username || !password}
-            className="w-full py-4 bg-rose-600 hover:bg-rose-700 focus:ring-rose-200"
+            className="w-full py-4 bg-accent hover:bg-rose-700 focus:ring-rose-200"
           >
             {isLoading ? (
               <>
@@ -88,6 +89,22 @@ export default function LoginPage() {
               'Login'
             )}
           </Button>
+
+          <div className="text-center text-sm text-zinc-500 mt-6">
+            <div className="inline-flex flex-col items-center gap-1">
+              <p>
+                Having trouble logging in?
+              </p>
+              <Link
+                href="mailto:hello@clevercreativeofficial.com"
+                className="text-zinc-600 hover:text-zinc-800 font-medium inline-flex items-center gap-1 transition-colors"
+              >
+                <Mail className="h-3.5 w-3.5" />
+                Contact support
+              </Link>
+            </div>
+
+          </div>
 
           {/* <div className="text-center text-sm text-zinc-500">
             <p>Default credentials: admin / wedding</p>
