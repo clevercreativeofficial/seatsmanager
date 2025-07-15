@@ -333,48 +333,58 @@ export default function DashboardPage() {
 
                     {/* List View */}
                     {viewMode === 'list' && (
-                        <Card>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Table</TableHead>
-                                        <TableHead>Seats</TableHead>
-                                        <TableHead>Status</TableHead>
-                                        <TableHead>Actions</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {paginatedTables.map((table) => {
-                                        const filled = table.seats.filter((s) => s.guest_name !== null).length;
-                                        return (
-                                            <TableRow key={table.id}>
-                                                <TableCell className="font-medium">{table.label}</TableCell>
-                                                <TableCell>{filled}/8 seated</TableCell>
-                                                <TableCell>
-                                                    {filled === 8 ? (
-                                                        <span className="text-green-600">Complete</span>
-                                                    ) : filled === 0 ? (
-                                                        <span className="text-rose-600">Empty</span>
-                                                    ) : (
-                                                        <span className="text-blue-600">In Progress</span>
-                                                    )}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Button
-                                                        variant="outline"
-                                                        className='hover:text-white hover:border-transparent'
-                                                        size="sm"
-                                                        onClick={() => openManageModal(table)}
-                                                    >
-                                                        Manage
-                                                    </Button>
-                                                </TableCell>
+                        <>
+                            {paginatedTables.length !== 0 && (
+                                <Card>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Table</TableHead>
+                                                <TableHead>Seats</TableHead>
+                                                <TableHead>Status</TableHead>
+                                                <TableHead>Actions</TableHead>
                                             </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </Card>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {paginatedTables.map((table) => {
+                                                const filled = table.seats.filter((s) => s.guest_name !== null).length;
+                                                return (
+                                                    <TableRow key={table.id}>
+                                                        <TableCell className="font-medium">{table.label}</TableCell>
+                                                        <TableCell>{filled}/8 seated</TableCell>
+                                                        <TableCell>
+                                                            {filled === 8 ? (
+                                                                <span className="text-green-600">Complete</span>
+                                                            ) : filled === 0 ? (
+                                                                <span className="text-rose-600">Empty</span>
+                                                            ) : (
+                                                                <span className="text-blue-600">In Progress</span>
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <Button
+                                                                variant="outline"
+                                                                className='hover:text-white hover:border-transparent'
+                                                                size="sm"
+                                                                onClick={() => openManageModal(table)}
+                                                            >
+                                                                Manage
+                                                            </Button>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
+                                        </TableBody>
+                                    </Table>
+                                </Card>
+                            )}
+                            {/* Empty State */}
+                            {paginatedTables.length === 0 && (
+                                <div className="text-center py-12">
+                                    <p className="text-gray-500">No tables match your current filters</p>
+                                </div>
+                            )}
+                        </>
                     )}
 
                     {/* Pagination */}
