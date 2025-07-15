@@ -116,11 +116,16 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Quicksand", sans-serif;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-semibold;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
   }
   Button {
     @apply cursor-pointer;

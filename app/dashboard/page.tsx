@@ -304,9 +304,9 @@ export default function DashboardPage() {
               </div>
               <h1 className="md:text-2xl text-xl font-bold text-gray-800">WSM</h1>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <Link href="/about">
-                <Button variant="ghost" size="icon" className="text-gray-600 hover:bg-gray-100">
+                <Button variant="ghost" className="text-gray-600 hover:bg-gray-100">
                   <Code className="h-5 w-5" />
                   <span>About</span>
                 </Button>
