@@ -89,9 +89,9 @@ export default function LoginPage() {
             )}
           </Button>
 
-          <div className="text-center text-sm text-zinc-500">
+          {/* <div className="text-center text-sm text-zinc-500">
             <p>Default credentials: admin / wedding</p>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>
