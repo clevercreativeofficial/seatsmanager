@@ -44,7 +44,7 @@ export default function LoginPage() {
             <Armchair className="h-10 w-10 text-accent" />
             </div>
           </div>
-          <h1 className="mt-4 text-3xl font-bold text-center text-zinc-800">Wedding Table Manager</h1>
+          <h1 className="mt-4 text-3xl font-bold text-center text-zinc-800">Wedding Seat Manager</h1>
           <p className="text-center text-sm text-zinc-500">
             Please enter your credentials to continue
           </p>
