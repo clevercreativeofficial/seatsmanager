@@ -20,8 +20,8 @@ export default function AboutPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-zinc-50 to-zinc-100">
-      <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-lg space-y-8 text-center border border-zinc-100">
+    <div className="min-h-screen flex items-center justify-center py-4 px-2 bg-gradient-to-br from-zinc-50 to-zinc-100">
+      <div className="max-w-md w-full bg-white py-8 px-6 rounded-3xl shadow-2xl shadow-zinc-200 space-y-8 text-center border border-zinc-200">
         <div className="space-y-1">
           <Badge variant="secondary" className="mx-auto">
             <span className="text-xs font-medium tracking-wide">ABOUT THE DEVELOPER</span>
@@ -45,15 +45,15 @@ export default function AboutPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-          <Button asChild className="w-full sm:w-auto px-6">
+          <Button asChild variant="outline"  className="w-full sm:w-auto px-6 hover:bg-accent hover:text-white transition-colors">
             <Link href="https://clevercreativeofficial.com/" target="_blank">
               View Portfolio
             </Link>
           </Button>
           <Button 
-            variant="outline" 
+            
             asChild 
-            className="w-full sm:w-auto px-6 hover:bg-zinc-800 hover:text-white transition-colors"
+            className="w-full sm:w-auto px-6"
           >
             <Link href="/dashboard">
               Back to Dashboard

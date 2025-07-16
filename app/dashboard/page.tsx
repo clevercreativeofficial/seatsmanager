@@ -153,21 +153,33 @@ export default function DashboardPage() {
                 <div className="bg-rose-100 p-2 rounded-lg">
                   <Armchair className="h-6 w-6 text-rose-600" />
                 </div>
-                <h1 className="text-2xl font-bold text-gray-800">WSM Seating</h1>
+                <h1 className="md:text-2xl text-xl font-bold text-gray-800">WSM</h1>
               </div>
-              <Skeleton className="h-10 w-24 rounded-md bg-gray-300" />
+              <div className="flex items-center space-x-2">
+                <Skeleton className="h-8 w-24 rounded-md bg-gray-300" />
+                <Skeleton className="h-8 w-24 rounded-md bg-accent/20" />
+              </div>
             </div>
           </Container>
         </header>
         <Container>
           <div className="py-8 space-y-6">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-              <div>
+              <div className="sm:translate-y-0 translate-y-8 sm:pb-0 pb-4 sm:mb-0 mb-4">
                 <Skeleton className="h-8 w-48 mb-2 bg-gray-300" />
                 <Skeleton className="h-4 w-64 bg-gray-300" />
               </div>
-              <div className="flex gap-2">
-                <Skeleton className="h-10 w-32 bg-gray-300" />
+              <div className="sm:flex hidden items-center gap-2">
+                <Skeleton className="h-8 w-32 bg-gray-300" />
+                <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+                  <Skeleton className="h-8 w-8 rounded-md bg-gray-300" />
+                  <Skeleton className="h-8 w-8 rounded-md bg-gray-300" />
+                </div>
+              </div>
+
+              {/* Mobile */}
+              <div className="fixed top-18 left-0 w-full flex sm:hidden justify-between gap-2 pt-4 pb-2 px-4 bg-zinc-50 z-40">
+                <Skeleton className="h-8 w-32 bg-gray-300" />
                 <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
                   <Skeleton className="h-8 w-8 rounded-md bg-gray-300" />
                   <Skeleton className="h-8 w-8 rounded-md bg-gray-300" />
@@ -178,7 +190,7 @@ export default function DashboardPage() {
             {/* Skeleton for both view modes */}
             {viewMode === 'grid' ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {[...Array(6)].map((_, i) => (
+                {[...Array(24)].map((_, i) => (
                   <Card key={i} className="border-gray-200">
                     <div className="p-4 space-y-3">
                       <Skeleton className="h-6 w-24 bg-gray-300" />
@@ -192,8 +204,8 @@ export default function DashboardPage() {
             ) : (
               <Card className="border-gray-200">
                 <div className="p-4 space-y-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="flex items-center justify-between">
+                  {[...Array(24)].map((_, i) => (
+                    <div key={i} className="flex items-center justify-between gap-2">
                       <Skeleton className="h-4 w-24 bg-gray-300" />
                       <Skeleton className="h-4 w-20 bg-gray-300" />
                       <Skeleton className="h-4 w-32 bg-gray-300" />
@@ -267,6 +279,7 @@ export default function DashboardPage() {
                         value={guestName}
                         onChange={(e) => setGuestName(e.target.value)}
                         disabled={isSubmitting}
+                        className='text-sm'
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-2">

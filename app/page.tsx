@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2, Lock, User, Mail } from 'lucide-react';
+import { Loader2, Lock, User, Mail, Armchair } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -36,10 +36,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-[375px] w-full bg-white rounded-xl shadow-2xl shadow-zinc-200 overflow-hidden border border-zinc-100">
+    <div className="min-h-screen flex items-center justify-center py-4 px-2">
+      <div className="max-w-[375px] w-full bg-white rounded-xl shadow-2xl shadow-zinc-200 overflow-hidden border border-zinc-200">
         <form onSubmit={handleLogin} className="py-8 md:px-8 px-4 space-y-6">
-          <h1 className="mt-4 text-3xl font-bold text-center text-zinc-800">WS Manager</h1>
+          <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center justify-center w-20 h-20 bg-accent/10 rounded-full">
+            <Armchair className="h-10 w-10 text-accent" />
+            </div>
+          </div>
+          <h1 className="mt-4 text-3xl font-bold text-center text-zinc-800">Wedding Table Manager</h1>
           <p className="text-center text-sm text-zinc-500">
             Please enter your credentials to continue
           </p>
@@ -90,7 +95,7 @@ export default function LoginPage() {
             )}
           </Button>
 
-          <div className="text-center text-sm text-zinc-500 mt-6">
+          <div className="text-center text-sm text-zinc-500 mt-3">
             <div className="inline-flex flex-col items-center gap-1">
               <p>
                 Having trouble logging in?
