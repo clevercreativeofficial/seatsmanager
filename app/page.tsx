@@ -41,9 +41,13 @@ export default function DashboardPage() {
   const [activeSeatId, setActiveSeatId] = useState<string | null>(null);
   const [guestName, setGuestName] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const tablesPerPage = 24;
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [actionType, setActionType] = useState<'remove' | ''>('');
+  const [seatToAction, setSeatToAction] = useState<string | null>(null);
+
+  const tablesPerPage = 24;
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isAuthenticated') === 'true';
@@ -143,6 +147,13 @@ export default function DashboardPage() {
     }
   };
 
+  const handleConfirmAction = () => {
+    if (actionType === 'remove' && seatToAction) {
+      removeGuest(seatToAction);
+    }
+    setShowConfirmation(false);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -223,7 +234,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Modal */}
+      {/* Table Management Modal */}
       <Dialog open={!!selectedTable} onOpenChange={() => !isSubmitting && setSelectedTable(null)}>
         <DialogContent className="sm:max-w-[425px]">
           {selectedTable && (
@@ -234,7 +245,33 @@ export default function DashboardPage() {
                   Manage {selectedTable.label}
                 </DialogTitle>
               </DialogHeader>
+
               <div className="mt-4 space-y-4">
+                {/* Confirmation message for delete/unassign */}
+                {showConfirmation && (
+                  <div className="p-4 bg-gray-50 rounded-lg mb-4">
+                    <p className="text-sm text-gray-700 mb-3">
+                      Are you sure you want to {actionType} the guest?
+                    </p>
+                    <div className="flex gap-2 justify-end">
+                      <Button
+                        onClick={() => setShowConfirmation(false)}
+                        disabled={isSubmitting}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={handleConfirmAction}
+                        disabled={isSubmitting}
+                      >
+                        Confirm
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Seats list */}
                 <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2">
                   {selectedTable.seats.map((seat) => (
                     <div key={seat.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -249,14 +286,18 @@ export default function DashboardPage() {
                       </div>
                       {seat.guest_name ? (
                         <Button
-                          variant="destructive"
+                          variant="outline"
                           size="sm"
-                          onClick={() => removeGuest(seat.id)}
+                          onClick={() => {
+                            setSeatToAction(seat.id);
+                            setActionType('remove');
+                            setShowConfirmation(true);
+                          }}
                           disabled={isSubmitting}
-                          className="hover:border-transparent"
+                          className="text-accent hover:text-white hover:border-transparent"
                         >
                           <Trash2 className="h-4 w-4" />
-                          Clear
+                          Remove
                         </Button>
                       ) : (
                         <Button
@@ -264,7 +305,7 @@ export default function DashboardPage() {
                           size="sm"
                           onClick={() => setActiveSeatId(seat.id)}
                           disabled={isSubmitting}
-                          className="hover:border-transparent hover:text-white"
+                          className="hover:border-transparent hover:bg-primary hover:text-white"
                         >
                           <UserRoundPlus className="h-4 w-4" />
                           Assign
@@ -274,6 +315,7 @@ export default function DashboardPage() {
                   ))}
                 </div>
 
+                {/* Guest assignment form */}
                 {activeSeatId && (
                   <div className="space-y-3 pt-2">
                     <div>
@@ -299,9 +341,12 @@ export default function DashboardPage() {
                       </Button>
                       <Button
                         variant="outline"
-                        onClick={() => setActiveSeatId(null)}
+                        onClick={() => {
+                          setActiveSeatId(null);
+                          setGuestName('');
+                        }}
                         disabled={isSubmitting}
-                        className="w-full hover:border-transparent"
+                        className="w-full hover:text-white hover:border-transparent"
                       >
                         Cancel
                       </Button>
@@ -347,7 +392,6 @@ export default function DashboardPage() {
       {/* Main Content */}
       <Container>
         <main className="py-8">
-
           {/* Dashboard Header */}
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
             <div className='sm:translate-y-0 translate-y-12 sm:pb-0 pb-4'>
@@ -359,7 +403,6 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-
               <div className="sm:flex hidden gap-2">
                 <Select
                   value={filter}
@@ -436,7 +479,6 @@ export default function DashboardPage() {
                   </Button>
                 </div>
               </div>
-
             </div>
           </div>
 
