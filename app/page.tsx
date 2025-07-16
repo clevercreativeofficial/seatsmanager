@@ -354,7 +354,7 @@ export default function DashboardPage() {
                             size="sm"
                             onClick={() => toggleGuestPresence(seat.id, seat.is_present)}
                             disabled={isSubmitting}
-                            className="h-8 px-2"
+                            className="h-8 px-2 hover:text-white hover:border-transparent"
                           >
                             {seat.is_present ? (
                               <X className="h-4 w-4" />
@@ -370,7 +370,7 @@ export default function DashboardPage() {
                               setGuestName(seat.guest_name || '');
                             }}
                             disabled={isSubmitting}
-                            className="h-8 px-2"
+                            className="h-8 px-2 hover:text-white hover:border-transparent"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -383,7 +383,7 @@ export default function DashboardPage() {
                               setShowConfirmation(true);
                             }}
                             disabled={isSubmitting}
-                            className="h-8 px-2 text-destructive hover:text-destructive"
+                            className="h-8 px-2 text-accent hover:text-white hover:border-transparent"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
