@@ -17,7 +17,7 @@ export default function NotFound() {
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button className="max-w-fit mx-auto w-full bg-accent hover:text-white hover:border-transparent" asChild>
-            <Link href="/dashboard">
+            <Link href="/">
             <Rocket className="h-4 w-4" />
               Go back
             </Link>

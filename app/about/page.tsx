@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { ArrowUpLeft, ArrowRight } from 'lucide-react';
 
 export default function AboutPage() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function AboutPage() {
     // Check authentication on component mount
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (!isAuthenticated) {
-      router.replace('/');
+      router.replace('/login');
     }
   }, [router]);
 
@@ -45,18 +46,19 @@ export default function AboutPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-          <Button asChild variant="outline"  className="w-full sm:w-auto px-6 hover:bg-accent hover:text-white transition-colors">
+          <Button asChild variant="outline"  className="w-full sm:w-auto px-6 hover:border-transparent hover:bg-accent hover:text-white transition-colors">
             <Link href="https://clevercreativeofficial.com/" target="_blank">
+              <ArrowUpLeft className="ml-1 h-4 w-4" />
               View Portfolio
             </Link>
           </Button>
           <Button 
-            
             asChild 
             className="w-full sm:w-auto px-6"
           >
-            <Link href="/dashboard">
-              Back to Dashboard
+            <Link href="/">
+              Go back
+              <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
         </div>
