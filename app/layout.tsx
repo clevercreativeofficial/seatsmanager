@@ -15,7 +15,7 @@ const quicksand = Quicksand({
 
 
 export const metadata: Metadata = {
-  title: "Seats Manager",
+  title: "Wedding Seats Manager",
   description: "A simple seating management system",
 };
 
@@ -26,6 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <header>
+        <meta name="theme-color" content="#EC003F"/>
+      </header>
       <body className={`${poppins.variable} ${quicksand.variable} bg-zinc-50`}>
           {children}
       </body>
