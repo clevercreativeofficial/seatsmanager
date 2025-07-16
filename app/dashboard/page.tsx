@@ -174,7 +174,7 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
-            
+
             {/* Skeleton for both view modes */}
             {viewMode === 'grid' ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -308,7 +308,7 @@ export default function DashboardPage() {
               <Link href="/about">
                 <Button variant="ghost" className="text-gray-600 hover:bg-gray-100">
                   <Code className="h-5 w-5" />
-                  <span>About</span>
+                  <span>Dev.</span>
                 </Button>
               </Link>
               <Button
@@ -327,20 +327,22 @@ export default function DashboardPage() {
       {/* Main Content */}
       <Container>
         <main className="py-8">
+
           {/* Dashboard Header */}
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
-            <div>
+            <div className='sm:translate-y-0 translate-y-12 sm:pb-0 pb-4'>
               <h1 className="text-2xl font-bold text-gray-800">Table Management</h1>
-              <p className="text-gray-600">
-                {filteredTables.length} {filteredTables.length === 1 ? 'table' : 'tables'} found •{' '}
+              <p className="text-sm text-gray-600">
+                {filteredTables.length} {filteredTables.length === 1 ? 'table' : 'tables'} found ·{' '}
                 {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null).length, 0)} guests seated
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <div className="flex gap-2">
-                <Select 
-                  value={filter} 
+
+              <div className="sm:flex hidden gap-2">
+                <Select
+                  value={filter}
                   onValueChange={(value) => {
                     setFilter(value as typeof filter);
                     setCurrentPage(1);
@@ -375,6 +377,46 @@ export default function DashboardPage() {
                   </Button>
                 </div>
               </div>
+
+              {/* Mobile */}
+              <div className="fixed top-18 left-0 w-full flex sm:hidden justify-between gap-2 pt-4 pb-2 px-4 bg-zinc-50 z-40">
+                <Select
+                  value={filter}
+                  onValueChange={(value) => {
+                    setFilter(value as typeof filter);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Filter tables" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Tables</SelectItem>
+                    <SelectItem value="available">Available Tables</SelectItem>
+                    <SelectItem value="taken">Fully Seated</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+                  <Button
+                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('grid')}
+                    className="h-8 px-2"
+                  >
+                    <LayoutGrid className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('list')}
+                    className="h-8 px-2"
+                  >
+                    <List className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -386,21 +428,20 @@ export default function DashboardPage() {
                   {paginatedTables.map((table) => {
                     const filled = table.seats.filter((s) => s.guest_name !== null).length;
                     const fillPercentage = (filled / 8) * 100;
-                    const statusColor = fillPercentage >= 100 ? 'bg-green-500' : 
-                                      fillPercentage >= 50 ? 'bg-blue-500' : 'bg-rose-500';
+                    const statusColor = fillPercentage >= 100 ? 'bg-green-500' :
+                      fillPercentage >= 50 ? 'bg-blue-500' : 'bg-rose-500';
 
                     return (
-                      <Card 
-                        key={table.id} 
+                      <Card
+                        key={table.id}
                         className="hover:shadow-md transition-shadow overflow-hidden"
                       >
                         <div className="p-4 space-y-3">
                           <div className="flex justify-between items-center">
                             <h3 className="font-semibold text-lg text-gray-800">{table.label}</h3>
-                            <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                              filled === 8 ? 'bg-green-100 text-green-800' : 
+                            <span className={`text-xs font-medium px-2 py-1 rounded-full ${filled === 8 ? 'bg-green-100 text-green-800' :
                               filled === 0 ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800'
-                            }`}>
+                              }`}>
                               {filled}/8
                             </span>
                           </div>
@@ -434,8 +475,8 @@ export default function DashboardPage() {
                 <div className="flex flex-col items-center justify-center py-12 space-y-4">
                   <Armchair className="h-12 w-12 text-gray-400" />
                   <p className="text-gray-500">No tables match your current filters</p>
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     onClick={() => {
                       setFilter('all');
                       setCurrentPage(1);
@@ -487,10 +528,9 @@ export default function DashboardPage() {
                               <div className="flex items-center gap-2">
                                 <div className="w-16 bg-gray-200 rounded-full h-2">
                                   <div
-                                    className={`h-2 rounded-full ${
-                                      filled === 8 ? 'bg-green-500' : 
+                                    className={`h-2 rounded-full ${filled === 8 ? 'bg-green-500' :
                                       filled >= 4 ? 'bg-blue-500' : 'bg-rose-500'
-                                    }`}
+                                      }`}
                                     style={{ width: `${(filled / 8) * 100}%` }}
                                   />
                                 </div>
@@ -517,8 +557,8 @@ export default function DashboardPage() {
                 <div className="flex flex-col items-center justify-center py-12 space-y-4">
                   <Armchair className="h-12 w-12 text-gray-400" />
                   <p className="text-gray-500">No tables match your current filters</p>
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     onClick={() => {
                       setFilter('all');
                       setCurrentPage(1);
