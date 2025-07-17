@@ -543,8 +543,7 @@ export default function DashboardPage() {
               <p className="text-sm text-gray-600">
                 {filteredTables.length} {filteredTables.length === 1 ? 'table' : 'tables'} found ·{' '}
                 {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null).length, 0)} guests ·{' '}
-                {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null && s.is_present).length, 0)} present ·{' '}
-                {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null && !s.is_present).length, 0)} absent
+                {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null && s.is_present).length, 0)} present
               </p>
             </div>
 
