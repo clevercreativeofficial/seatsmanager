@@ -11,6 +11,17 @@ import { supabase } from '@/lib/supabase';
 
 const MAX_SESSIONS = 20;
 
+const USER_CREDENTIALS = {
+  admin: {
+    password: 'admin@1234',
+    isAdmin: true
+  },
+  staff: {
+    password: 'wedding',
+    isAdmin: false
+  }
+};
+
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -37,14 +48,19 @@ export default function LoginPage() {
         return;
       }
 
-      // Simple authentication
-      if (username === 'admin' && password === 'wedding') {
+      // Check credentials against predefined users
+      const user = USER_CREDENTIALS[username as keyof typeof USER_CREDENTIALS];
+      
+      if (user && password === user.password) {
         // Generate session ID
         const sessionId = crypto.randomUUID();
         
         // Store in localStorage
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('sessionId', sessionId);
+        if (user.isAdmin) {
+          localStorage.setItem('isAdmin', 'true');
+        }
 
         // Store in Supabase
         const { error } = await supabase
@@ -74,7 +90,7 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="py-8 md:px-8 px-4 space-y-6">
           <div className="flex items-center justify-center mb-4">
             <div className="flex items-center justify-center w-20 h-20 bg-accent/10 rounded-full">
-            <Armchair className="h-10 w-10 text-accent" />
+              <Armchair className="h-10 w-10 text-accent" />
             </div>
           </div>
           <h1 className="mt-4 text-3xl font-bold text-center text-zinc-800">Wedding Seat Manager</h1>
@@ -141,12 +157,7 @@ export default function LoginPage() {
                 Contact support
               </Link>
             </div>
-
           </div>
-
-          {/* <div className="text-center text-sm text-zinc-500">
-            <p>Default credentials: admin / wedding</p>
-          </div> */}
         </form>
       </div>
     </div>

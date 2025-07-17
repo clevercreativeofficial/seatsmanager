@@ -117,6 +117,7 @@ export default function DashboardPage() {
       // Remove local authentication
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('sessionId');
+      localStorage.removeItem('isAdmin');
 
       // Delete from Supabase if session exists
       if (sessionId) {
@@ -388,33 +389,39 @@ export default function DashboardPage() {
                               <Check className="h-4 w-4" />
                             )}
                           </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setActiveSeatId(seat.id);
-                              setGuestName(seat.guest_name || '');
-                            }}
-                            disabled={isSubmitting}
-                            className="h-8 px-2 hover:text-white hover:border-transparent"
-                          >
-                            <Edit2 className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setSeatToAction(seat.id);
-                              setActionType('remove');
-                              setShowConfirmation(true);
-                            }}
-                            disabled={isSubmitting}
-                            className="h-8 px-2 text-accent hover:text-white hover:border-transparent"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                          {localStorage.getItem('isAdmin') === 'true' &&
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setActiveSeatId(seat.id);
+                                  setGuestName(seat.guest_name || '');
+                                }}
+                                disabled={isSubmitting}
+                                className="h-8 px-2 hover:text-white hover:border-transparent"
+                              >
+                                <Edit2 className="h-4 w-4" />
+                              </Button>
+
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setSeatToAction(seat.id);
+                                  setActionType('remove');
+                                  setShowConfirmation(true);
+                                }}
+                                disabled={isSubmitting}
+                                className="h-8 px-2 text-accent hover:text-white hover:border-transparent"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </>
+                          }
                         </div>
                       ) : (
+                        localStorage.getItem('isAdmin') === 'true' &&
                         <Button
                           variant="outline"
                           size="sm"
