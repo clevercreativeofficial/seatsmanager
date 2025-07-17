@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
 const MAX_SESSIONS = 20;
-const isAllowedToLogin = false;
+const isAllowedToLogin = true; // This can be toggled based on your business logic
 
 const USER_CREDENTIALS = {
   admin: {
