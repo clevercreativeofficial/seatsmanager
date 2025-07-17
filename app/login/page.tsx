@@ -1,4 +1,4 @@
-// File: app/page.tsx (Login Page with Username/Password Auth)
+// app/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, Lock, User, Mail, Armchair } from 'lucide-react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
+
+const MAX_SESSIONS = 20;
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -21,15 +24,45 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Check current active sessions count
+      const { count } = await supabase
+        .from('sessions')
+        .select('*', { 
+          count: 'exact', 
+          head: true,
+        });
 
+      if (count && count >= MAX_SESSIONS) {
+        setError('Maximum number of users reached. Please try again later.');
+        return;
+      }
+
+      // Simple authentication
       if (username === 'admin' && password === 'wedding') {
+        // Generate session ID
+        const sessionId = crypto.randomUUID();
+        
+        // Store in localStorage
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('sessionId', sessionId);
+
+        // Store in Supabase
+        const { error } = await supabase
+          .from('sessions')
+          .insert([{ 
+            session_id: sessionId
+            // created_at and expires_at will be set automatically
+          }]);
+
+        if (error) throw error;
+
         router.push('/');
       } else {
         setError('Invalid username or password');
       }
+    } catch (err) {
+      setError('Login failed. Please try again.');
+      console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }

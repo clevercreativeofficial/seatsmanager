@@ -109,9 +109,35 @@ export default function DashboardPage() {
 
   const totalPages = Math.ceil(filteredTables.length / tablesPerPage);
 
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    router.replace('/login');
+  const handleLogout = async () => {
+    try {
+      // Get session ID from localStorage
+      const sessionId = localStorage.getItem('sessionId');
+
+      // Remove local authentication
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('sessionId');
+
+      // Delete from Supabase if session exists
+      if (sessionId) {
+        const { error } = await supabase
+          .from('sessions')
+          .delete()
+          .eq('session_id', sessionId);
+
+        if (error) {
+          console.error('Failed to delete session from Supabase:', error);
+        }
+      }
+
+      // Redirect to login
+      router.replace('/login');
+      router.refresh(); // Ensure client state updates
+
+    } catch (err) {
+      console.error('Logout error:', err);
+      router.replace('/login');
+    }
   };
 
   const openManageModal = (table: Table) => {
@@ -515,7 +541,7 @@ export default function DashboardPage() {
             <div className='sm:translate-y-0 translate-y-12 sm:pb-0 pb-4'>
               <h1 className="text-2xl font-bold text-gray-800">Table Management</h1>
               <p className="text-sm text-gray-600">
-                 {filteredTables.length} {filteredTables.length === 1 ? 'table' : 'tables'} found ·{' '}
+                {filteredTables.length} {filteredTables.length === 1 ? 'table' : 'tables'} found ·{' '}
                 {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null).length, 0)} guests ·{' '}
                 {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null && s.is_present).length, 0)} present ·{' '}
                 {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null && !s.is_present).length, 0)} absent
