@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
 const MAX_SESSIONS = 20;
+const isAllowedToLogin = false;
 
 const USER_CREDENTIALS = {
   admin: {
@@ -38,8 +39,8 @@ export default function LoginPage() {
       // Check current active sessions count
       const { count } = await supabase
         .from('sessions')
-        .select('*', { 
-          count: 'exact', 
+        .select('*', {
+          count: 'exact',
           head: true,
         });
 
@@ -50,22 +51,32 @@ export default function LoginPage() {
 
       // Check credentials against predefined users
       const user = USER_CREDENTIALS[username as keyof typeof USER_CREDENTIALS];
-      
+
       if (user && password === user.password) {
         // Generate session ID
         const sessionId = crypto.randomUUID();
-        
-        // Store in localStorage
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('sessionId', sessionId);
-        if (user.isAdmin) {
-          localStorage.setItem('isAdmin', 'true');
+
+        if (isAllowedToLogin) {
+          // Store in localStorage
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('sessionId', sessionId);
+          // Explicitly set isAdmin to false if user is not admin
+          localStorage.setItem('isAdmin', user.isAdmin ? 'true' : 'false');
+          setError(''); // Clear any previous error
+        }
+        // If not allowed to login, just clear localStorage
+        else {
+          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('sessionId');
+          localStorage.removeItem('isAdmin');
+          setError('Login unavailable - try again later.');
+          return;
         }
 
         // Store in Supabase
         const { error } = await supabase
           .from('sessions')
-          .insert([{ 
+          .insert([{
             session_id: sessionId
             // created_at and expires_at will be set automatically
           }]);
