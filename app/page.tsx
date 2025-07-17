@@ -515,8 +515,10 @@ export default function DashboardPage() {
             <div className='sm:translate-y-0 translate-y-12 sm:pb-0 pb-4'>
               <h1 className="text-2xl font-bold text-gray-800">Table Management</h1>
               <p className="text-sm text-gray-600">
-                {filteredTables.length} {filteredTables.length === 1 ? 'table' : 'tables'} found ·{' '}
-                {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null).length, 0)} guests seated
+                 {filteredTables.length} {filteredTables.length === 1 ? 'table' : 'tables'} found ·{' '}
+                {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null).length, 0)} guests ·{' '}
+                {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null && s.is_present).length, 0)} present ·{' '}
+                {filteredTables.reduce((acc, table) => acc + table.seats.filter(s => s.guest_name !== null && !s.is_present).length, 0)} absent
               </p>
             </div>
 
@@ -565,7 +567,7 @@ export default function DashboardPage() {
                   <SelectContent>
                     <SelectItem value="all">All Tables</SelectItem>
                     <SelectItem value="available">Available Tables</SelectItem>
-                    <SelectItem value="taken">Fully Seated</SelectItem>
+                    <SelectItem value="taken">Fully Occupied</SelectItem>
                   </SelectContent>
                 </Select>
 
